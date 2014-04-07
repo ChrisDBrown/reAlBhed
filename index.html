@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>reAlBhed - Realtime Al Bhed Translator</title>
+  <script>
+    window.onload = function() {
+      // when the document is loaded, do this:
+      // get the input field and the output paragraph 
+      var input  = document.getElementById("input");
+      var output = document.getElementById("output");
+      
+      // move focus to input field so user can start typing immediately
+      input.focus();
+      
+      // bind the input's "key up" event to rot13 translation action
+      input.onkeyup = function() {
+          /* Your code here! */
+      };
+    };
+  </script>
+</head>
+<body>
+  <h1 id="title">reAlBhed - Realtime Al Bhed Translator</h1>
+  <textarea id="input" class="box"></textarea>
+  <p id="output" class="box"></p>
+</body>
+</html>
