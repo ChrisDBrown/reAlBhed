@@ -5,17 +5,27 @@
   <title>reAlBhed - Realtime Al Bhed Translator</title>
   <script>
     window.onload = function() {
-      // when the document is loaded, do this:
-      // get the input field and the output paragraph 
       var input  = document.getElementById("input");
       var output = document.getElementById("output");
+      var engalpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWQYZ";
+      var albalpha = "ypltavkrezgmshubxncdijfqowYPLTAVKREZGMSHUBXNCDIJFXOW";
       
-      // move focus to input field so user can start typing immediately
       input.focus();
       
-      // bind the input's "key up" event to rot13 translation action
+      function translate(stringin) {
+        var stringout = "";
+        for (var i = 0; i < stringin.length; i++) {
+          if (engalpha.indexOf(stringin[i]) == -1) {
+            stringout = stringout + stringin[i];
+          } else {
+            stringout = stringout + albalpha.charAt(engalpha.indexOf(stringin[i]));
+          }
+        }
+        return stringout;
+      }
+
       input.onkeyup = function() {
-          /* Your code here! */
+          output.innerHTML = translate(input.value);
       };
     };
   </script>
