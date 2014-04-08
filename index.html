@@ -3,16 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>reAlBhed - Realtime Al Bhed Translator</title>
+  <link href="style.css" rel="stylesheet">
   <script>
     window.onload = function() {
       var input  = document.getElementById("input");
       var output = document.getElementById("output");
+      var engbutton = document.getElementById("english");
+      var albutton = document.getElementById("alBhed");
+      var title = document.getElementById("title");
       var engalpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWQYZ";
       var albalpha = "ypltavkrezgmshubxncdijfqowYPLTAVKREZGMSHUBXNCDIJFXOW";
       
       input.focus();
+      engbutton.onclick = function() {
+        var temp = input.value;
+        output.innerHTML = engToAl(input.value);
+        title.innerHTML = "reAlBhed - Realtime Al Bhed Translator";
+      }
+      albutton.onclick = function() {
+        output.innerHTML = alToEng(input.value);
+        title.innerHTML = "reAlBhed - Naymdesa Al Bhed Dnyhcmydun";
+      }
+
       
-      function translate(stringin) {
+      function engToAl(stringin) {
         var stringout = "";
         for (var i = 0; i < stringin.length; i++) {
           if (engalpha.indexOf(stringin[i]) == -1) {
@@ -24,15 +38,37 @@
         return stringout;
       }
 
+      function alToEng(stringin) {
+        var stringout = "";
+        for (var i = 0; i < stringin.length; i++) {
+          if (albalpha.indexOf(stringin[i]) == -1) {
+            stringout = stringout + stringin[i];
+          } else {
+            stringout = stringout + engalpha.charAt(albalpha.indexOf(stringin[i]));
+          }
+        }
+        return stringout;
+      }
+
       input.onkeyup = function() {
-          output.innerHTML = translate(input.value);
+        if (engbutton.checked) {
+          output.innerHTML = engToAl(input.value);
+        } else if (albutton.checked) {
+          output.innerHTML = alToEng(input.value);
+        } 
       };
     };
   </script>
 </head>
 <body>
-  <h1 id="title">reAlBhed - Realtime Al Bhed Translator</h1>
-  <textarea id="input" class="box"></textarea>
-  <p id="output" class="box"></p>
+  <div class="container">
+    <h1 id="title">reAlBhed - Realtime Al Bhed Translator</h1>
+    <textarea id="input" class="box"></textarea><br>
+    <input type="radio" name="language" id="english" value="English -> Al Bhed" checked>
+    <label for="english">English -> Al Bhed</label>
+    <input type="radio" name="language" id="alBhed" value="Al Bhed -> English">
+    <label for="alBhed">Al Bhed -> English</label><br>
+    <p id="output" class="box"></p>
+  </div>
 </body>
 </html>
