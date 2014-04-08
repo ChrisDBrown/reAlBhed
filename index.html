@@ -14,70 +14,65 @@
       var subtitle = document.getElementById("subtitle");
       var engalpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWQYZ";
       var albalpha = "ypltavkrezgmshubxncdijfqowYPLTAVKREZGMSHUBXNCDIJFXOW";
-      
+
+      //focus on textbox on load
       input.focus();
+
+      //english to al bhed translation function
+      function translate(stringin, from) {
+        var stringout = "";
+        var flag = new Boolean(true);
+        //for each item in the input string
+        for (var i = 0; i < stringin.length; i++) {
+          //check if it's an english letter
+          if (engalpha.indexOf(stringin[i]) == -1) {
+            //if not alpha, check whether to start ignoring translation
+            if (stringin[i] == '[') {
+              flag = false;
+            //or stop ignoring translation
+            } else if (stringin[i] == ']') {
+              flag = true;
+            //otherwise, add the non-alpha character to the output string
+            } else {
+              stringout = stringout + stringin[i];
+            }
+          //if alpha, check whether translation is being ignored
+          } else if (flag == false) {
+            //add character without translation if it is 
+            stringout = stringout + stringin[i];
+          } else {
+            //or translate, then add if it isn't
+            if (from == "english") {
+              stringout = stringout + albalpha.charAt(engalpha.indexOf(stringin[i]));
+            } else if (from == "alBhed") {
+              stringout = stringout + engalpha.charAt(albalpha.indexOf(stringin[i]));
+            }
+          }
+        }
+        return stringout;
+      }
+
+      //at the end of each keypress
+      input.onkeyup = function() {
+        //check which translation mode is selected, and translate
+        if (engbutton.checked) {
+          output.innerHTML = translate(input.value, "english");
+        } else if (albutton.checked) {
+          output.innerHTML = translate(input.value, "alBhed");
+        } 
+      }
+
+      //retranslate on radio button click, and change set text for effect
       engbutton.onclick = function() {
-        var temp = input.value;
-        output.innerHTML = engToAl(input.value);
+        output.innerHTML = translate(input.value, "english");
         title.innerHTML = "reAlBhed - Realtime Al Bhed Translator";
         subtitle.innerHTML = "Use square brackets to [stop translation]";
       }
       albutton.onclick = function() {
-        output.innerHTML = alToEng(input.value);
+        output.innerHTML = translate(input.value, "alBhed");
         title.innerHTML = "reAlBhed - Naymdesa Al Bhed Dnyhcmydun";
         subtitle.innerHTML = "Ica cxiyna pnylgadc du [stop translation]";
       }
-
-      
-      function engToAl(stringin) {
-        var stringout = "";
-        var flag = new Boolean(true);
-        for (var i = 0; i < stringin.length; i++) {
-          if (engalpha.indexOf(stringin[i]) == -1) {
-            if (stringin[i] == '[') {
-              flag = false;
-            } else if (stringin[i] == ']') {
-              flag = true;
-            } else {
-              stringout = stringout + stringin[i];
-            }
-          } else if (flag == false) {
-            stringout = stringout + stringin[i];
-          } else {
-            stringout = stringout + albalpha.charAt(engalpha.indexOf(stringin[i]));
-          }
-        }
-        return stringout;
-      }
-
-      function alToEng(stringin) {
-        var stringout = "";
-        var flag = new Boolean(true);
-        for (var i = 0; i < stringin.length; i++) {
-          if (engalpha.indexOf(stringin[i]) == -1) {
-            if (stringin[i] == '[') {
-              flag = false;
-            } else if (stringin[i] == ']') {
-              flag = true;
-            } else {
-              stringout = stringout + stringin[i];
-            }
-          } else if (flag == false) {
-            stringout = stringout + stringin[i];
-          } else {
-            stringout = stringout + engalpha.charAt(albalpha.indexOf(stringin[i]));
-          }
-        }
-        return stringout;
-      }
-
-      input.onkeyup = function() {
-        if (engbutton.checked) {
-          output.innerHTML = engToAl(input.value);
-        } else if (albutton.checked) {
-          output.innerHTML = alToEng(input.value);
-        } 
-      };
     };
   </script>
 </head>
