@@ -11,6 +11,7 @@
       var engbutton = document.getElementById("english");
       var albutton = document.getElementById("alBhed");
       var title = document.getElementById("title");
+      var subtitle = document.getElementById("subtitle");
       var engalpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWQYZ";
       var albalpha = "ypltavkrezgmshubxncdijfqowYPLTAVKREZGMSHUBXNCDIJFXOW";
       
@@ -19,17 +20,28 @@
         var temp = input.value;
         output.innerHTML = engToAl(input.value);
         title.innerHTML = "reAlBhed - Realtime Al Bhed Translator";
+        subtitle.innerHTML = "Use square brackets to [stop translation]";
       }
       albutton.onclick = function() {
         output.innerHTML = alToEng(input.value);
         title.innerHTML = "reAlBhed - Naymdesa Al Bhed Dnyhcmydun";
+        subtitle.innerHTML = "Ica cxiyna pnylgadc du [stop translation]";
       }
 
       
       function engToAl(stringin) {
         var stringout = "";
+        var flag = new Boolean(true);
         for (var i = 0; i < stringin.length; i++) {
           if (engalpha.indexOf(stringin[i]) == -1) {
+            if (stringin[i] == '[') {
+              flag = false;
+            } else if (stringin[i] == ']') {
+              flag = true;
+            } else {
+              stringout = stringout + stringin[i];
+            }
+          } else if (flag == false) {
             stringout = stringout + stringin[i];
           } else {
             stringout = stringout + albalpha.charAt(engalpha.indexOf(stringin[i]));
@@ -40,8 +52,17 @@
 
       function alToEng(stringin) {
         var stringout = "";
+        var flag = new Boolean(true);
         for (var i = 0; i < stringin.length; i++) {
-          if (albalpha.indexOf(stringin[i]) == -1) {
+          if (engalpha.indexOf(stringin[i]) == -1) {
+            if (stringin[i] == '[') {
+              flag = false;
+            } else if (stringin[i] == ']') {
+              flag = true;
+            } else {
+              stringout = stringout + stringin[i];
+            }
+          } else if (flag == false) {
             stringout = stringout + stringin[i];
           } else {
             stringout = stringout + engalpha.charAt(albalpha.indexOf(stringin[i]));
@@ -63,6 +84,7 @@
 <body>
   <div class="container">
     <h1 id="title">reAlBhed - Realtime Al Bhed Translator</h1>
+    <h2 id="subtitle">Use square brackets to [stop translation]</h2>
     <textarea id="input" class="box"></textarea><br>
     <input type="radio" name="language" id="english" value="English -> Al Bhed" checked>
     <label for="english">English -> Al Bhed</label>
