@@ -13,12 +13,36 @@
       var albutton = document.getElementById("alBhed");
       var title = document.getElementById("title");
       var subtitle = document.getElementById("subtitle");
-      var engalpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWQYZ";
+      var primers = document.getElementsByClassName("primer");
+      var primed = new Array();
+      var engalpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
       var albalpha = "ypltavkrezgmshubxncdijfqowYPLTAVKREZGMSHUBXNCDIJFXOW";
 
       //focus on textbox on load
       input.focus();
 
+      //create control function for each primer
+      for (var i = 0; i < primers.length; i++) {
+        primers[i].onclick = function() {
+          //on primer click, if primer id not in array, add it
+          if (primed.indexOf(parseInt(this.id)) == -1) {
+            primed.push(parseInt(this.id));
+            primed.push(parseInt(this.id) + 26);
+            console.log(primed);
+          //otherwise, remove it
+          } else {
+            primed.splice(primed.indexOf(parseInt(this.id)),1);
+            primed.splice(primed.indexOf(parseInt(this.id) + 26),1);
+          }
+          //then retranslate
+          if (engbutton.checked) {
+            output.innerHTML = translate(input.value, "english");
+          } else if (albutton.checked) {
+            output.innerHTML = translate(input.value, "alBhed");
+          } 
+        }
+      };
+      
       //english to al bhed translation function
       function translate(stringin, from) {
         var stringout = "";
@@ -40,13 +64,18 @@
           //if alpha, check whether translation is being ignored
           } else if (flag == false) {
             //add character without translation if it is 
-            stringout = stringout + stringin[i];
+            stringout = stringout + "<span class='ignore'>" + stringin[i] + "</span>";
           } else {
             //or translate, then add if it isn't
             if (from == "english") {
               stringout = stringout + albalpha.charAt(engalpha.indexOf(stringin[i]));
             } else if (from == "alBhed") {
-              stringout = stringout + engalpha.charAt(albalpha.indexOf(stringin[i]));
+              //check if the character has been translated already by primer, and mark it if so
+              if (primed.indexOf(engalpha.indexOf(stringin[i])) == -1) {
+                stringout = stringout + engalpha.charAt(albalpha.indexOf(stringin[i]));
+              } else {
+                stringout = stringout + "<span class='primed'>" + stringin[i] + "</span>";
+              }
             }
           }
         }
@@ -63,16 +92,14 @@
         } 
       }
 
-      //retranslate on radio button click, and change set text for effect
+      //retranslate on radio button click, and change title for effect
       engbutton.onclick = function() {
         output.innerHTML = translate(input.value, "english");
         title.innerHTML = "reAlBhed - Realtime Al Bhed Translator";
-        subtitle.innerHTML = "Use square brackets to [stop translation]";
       }
       albutton.onclick = function() {
         output.innerHTML = translate(input.value, "alBhed");
         title.innerHTML = "reAlBhed - Naymdesa Al Bhed Dnyhcmydun";
-        subtitle.innerHTML = "Ica cxiyna pnylgadc du [stop translation]";
       }
     };
   </script>
@@ -80,13 +107,58 @@
 <body>
   <div class="container">
     <h1 id="title">reAlBhed - Realtime Al Bhed Translator</h1>
-    <h2 id="subtitle">Use square brackets to [stop translation]</h2>
+    <h2 class="subtitle">Use square brackets to [<span class="ignore">stop translation</span>]</h2>
     <textarea id="input" class="box"></textarea><br>
     <input type="radio" name="language" id="english" value="English -> Al Bhed" checked>
     <label for="english"><span></span>English -> Al Bhed</label>
     <input type="radio" name="language" id="alBhed" value="Al Bhed -> English">
     <label for="alBhed"><span></span>Al Bhed -> English</label><br>
     <p id="output" class="box"></p>
+    <h2 class="subtitle">Choose any primers you <span class="primed">already have</span>.</h2>
+    <table>
+      <tr>
+        <td><input type="checkbox" class="primer" id="0"><label for="0">I</label></td>
+        <td><input type="checkbox" class="primer" id="1"><label for="1">II</label></td>
+        <td><input type="checkbox" class="primer" id="2"><label for="2">III</label></td>
+        <td><input type="checkbox" class="primer" id="3"><label for="3">IV</label></td>
+        <td><input type="checkbox" class="primer" id="4"><label for="4">V</label></td>
+        <td><input type="checkbox" class="primer" id="5"><label for="5">VI</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" class="primer" id="6"><label for="6">VII</label></td>
+        <td><input type="checkbox" class="primer" id="7"><label for="7">VIII</label></td>
+        <td><input type="checkbox" class="primer" id="8"><label for="8">IX</label></td>
+        <td><input type="checkbox" class="primer" id="9"><label for="9">X</label></td>
+        <td><input type="checkbox" class="primer" id="10"><label for="10">XI</label></td>
+        <td><input type="checkbox" class="primer" id="11"><label for="11">XII</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" class="primer" id="12"><label for="12">XIII</label></td>
+        <td><input type="checkbox" class="primer" id="13"><label for="13">XIV</label></td>
+        <td><input type="checkbox" class="primer" id="14"><label for="14">XV</label></td>
+        <td><input type="checkbox" class="primer" id="15"><label for="15">XVI</label></td>
+        <td><input type="checkbox" class="primer" id="16"><label for="16">XVII</label></td>
+        <td><input type="checkbox" class="primer" id="17"><label for="17">XVIII</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" class="primer" id="18"><label for="18">XIX</label></td>
+        <td><input type="checkbox" class="primer" id="19"><label for="19">XX</label></td>
+        <td><input type="checkbox" class="primer" id="20"><label for="20">XXI</label></td>
+        <td><input type="checkbox" class="primer" id="21"><label for="21">XXII</label></td>
+        <td><input type="checkbox" class="primer" id="22"><label for="22">XXIII</label></td>
+        <td><input type="checkbox" class="primer" id="23"><label for="23">XXIV</label></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="checkbox" class="primer" id="24"><label for="24">XXV</label></td>
+        <td></td>
+        <td></td>
+        <td><input type="checkbox" class="primer" id="25"><label for="25">XXVI</label></td>
+        <td></td>
+      </tr>
+    </table>
+    <br><br>
+    <p id="footer">Created by <a href="http://chrisdbrown.co.uk">Chris D Brown</a></p>
   </div>
 </body>
 </html>

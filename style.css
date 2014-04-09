@@ -343,15 +343,21 @@ body {
   font-family: 'Sonsie One', cursive;
   font-size: 35px; }
 
-#subtitle, .box, label {
+.subtitle, .box, label, #footer {
   font-family: 'Arapey', serif;
   line-height: 1.2; }
 
-#subtitle {
+.subtitle {
   font-size: 30px; }
 
-.box, label {
+.box, label, #footer {
   font-size: 23px; }
+
+.ignore {
+  color: #00CDEB; }
+
+.primed {
+  color: #A36678; }
 
 .box {
   width: 100%;
@@ -373,7 +379,14 @@ label, span {
 label {
   margin: 100px; }
 
-input[type="radio"] {
+table {
+  width: 600px;
+  margin: 0 auto;
+  padding: 10px; }
+  table label {
+    margin: 5px; }
+
+input[type="radio"], input[type="checkbox"] {
   display: none; }
 
 input[type="radio"] + label span {
@@ -382,8 +395,18 @@ input[type="radio"] + label span {
   height: 19px;
   margin: -1px 4px 0 0;
   vertical-align: middle;
-  background: url(radio_sheet.png) left top no-repeat;
+  background: url(radio_sheet.png) -37px top no-repeat;
   cursor: pointer; }
 
 input[type="radio"]:checked + label span {
-  background: url(radio_sheet.png) -19px top no-repeat; }
+  background: url(radio_sheet.png) -55px top no-repeat; }
+
+input[type="checkbox"]:checked + label {
+  color: #A36678; }
+
+#footer a {
+  text-decoration: none;
+  color: white;
+  border-bottom: 1px dotted white; }
+  #footer a:hover {
+    border-bottom: 1px solid white; }
