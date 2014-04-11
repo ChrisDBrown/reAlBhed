@@ -80,6 +80,16 @@ input[type="checkbox"]:checked + label {
   color: #A36678;
 }
 
+button {
+  border-radius: 5px;
+  font-family: 'Arapey', serif;
+  font-size: 25px;
+  width: 150px;
+}
+.spacer {
+  height: 15px;
+}
+
 #footer a {
   text-decoration: none;
   color: white;

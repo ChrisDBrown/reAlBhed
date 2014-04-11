@@ -20,15 +20,37 @@
 
       //focus on textbox on load
       input.focus();
+      loadPrimers();
+
+      //checks if the cookie is set and transfers the data to primed if it is
+      function loadPrimers() {
+        if (!(document.cookie.indexOf('savedprimers') == -1)) {
+          var cookies = document.cookie.split(';');
+          for (var x = 0; x < cookies.length; x++) {
+            if (!(cookies[x].indexOf('savedprimers') == -1)) {
+              var cookiestring = cookies[x];
+            }
+          }
+          cookiestring = cookiestring.substring(cookiestring.indexOf('=') + 1, cookiestring.length);
+          primed = cookiestring.split(',');
+          //converts primed to integers, then checks the stored boxes
+          for (var y = 0; y < primed.length; y++) {
+            primed[y] = parseInt(primed[y]);
+            if (primed[y] < 26) {
+              document.getElementById(primed[y]).checked = true;
+            }
+          }
+        }
+      }
 
       //create control function for each primer
       for (var i = 0; i < primers.length; i++) {
         primers[i].onclick = function() {
+          document.getElementById("save").innerHTML = "Save Primers";
           //on primer click, if primer id not in array, add it
           if (primed.indexOf(parseInt(this.id)) == -1) {
             primed.push(parseInt(this.id));
             primed.push(parseInt(this.id) + 26);
-            console.log(primed);
           //otherwise, remove it
           } else {
             primed.splice(primed.indexOf(parseInt(this.id)),1);
@@ -41,7 +63,7 @@
             output.innerHTML = translate(input.value, "alBhed");
           } 
         }
-      };
+      }
       
       //english to al bhed translation function
       function translate(stringin, from) {
@@ -97,22 +119,41 @@
         output.innerHTML = translate(input.value, "english");
         title.innerHTML = "reAlBhed - Realtime Al Bhed Translator";
       }
+
+      //as above, so below
       albutton.onclick = function() {
         output.innerHTML = translate(input.value, "alBhed");
         title.innerHTML = "reAlBhed - Naymdesa Al Bhed Dnyhcmydun";
+      }
+
+      //saves the selected primers to the cookie as 'savedprimers'
+      save.onclick = function() {
+        document.getElementById("save").innerHTML = "Saved!";
+        document.cookie = 'savedprimers=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = "savedprimers=" + primed;
+      }
+
+      //deletes the cookie and resets the selected primers
+      reset.onclick = function() {
+        document.cookie = 'savedprimers=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.getElementById("save").innerHTML = "Save primers";
+        for (var z = 0; z < 26; z++) {
+          document.getElementById(z).checked = false;
+        }
       }
     };
   </script>
 </head>
 <body>
+  <?php include_once("../../analyticstracking.php") ?>
   <div class="container">
     <h1 id="title">reAlBhed - Realtime Al Bhed Translator</h1>
     <h2 class="subtitle">Use square brackets to [<span class="ignore">stop translation</span>]</h2>
     <textarea id="input" class="box"></textarea><br>
-    <input type="radio" name="language" id="english" value="English -> Al Bhed" checked>
+    <input type="radio" name="language" id="alBhed" value="Al Bhed -> English" checked>
+    <label for="alBhed"><span></span>Al Bhed -> English</label>
+    <input type="radio" name="language" id="english" value="English -> Al Bhed">
     <label for="english"><span></span>English -> Al Bhed</label>
-    <input type="radio" name="language" id="alBhed" value="Al Bhed -> English">
-    <label for="alBhed"><span></span>Al Bhed -> English</label><br>
     <p id="output" class="box"></p>
     <h2 class="subtitle">Choose any primers you <span class="primed">already have</span>.</h2>
     <table>
@@ -155,6 +196,11 @@
         <td></td>
         <td><input type="checkbox" class="primer" id="25"><label for="25">XXVI</label></td>
         <td></td>
+      </tr>
+      <tr class="spacer"></tr>
+      <tr>
+        <td colspan="3"><button id="save">Save Primers</button></td>
+        <td colspan="3"><button id="reset">Reset</button></td>
       </tr>
     </table>
     <br><br>
