@@ -12,19 +12,19 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/skeleton.css">
 
-  <script src="js/vue.js"></script>
-  <script src="js/index.js"></script>
-
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="app">
     <div class="row">
       <h1>reAlBhed</h1>
       <label for="inField">In</label>
-      <textarea class="u-full-width" id="inField"></textarea>
+      <textarea class="u-full-width" id="inField" v-model="input" v-on:keyup="translate"></textarea>
       <label for="outField">Out</label>
-      <textarea class="u-full-width" id="outField" disabled></textarea>
+      <textarea class="u-full-width" id="outField" v-model="output" disabled></textarea>
     </div>
   </div>
+
+  <script src="js/vue.js"></script>
+  <script src="js/index.js"></script>
 </body>
 </html>
