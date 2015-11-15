@@ -18,10 +18,28 @@
     <div class="row">
       <h1>reAlBhed</h1>
       <p>Use <strong>[</strong>square brackets<strong>]</strong> for bits you don't want translated</p>
+
+      <div class="row">
+        <div class="six columns">
+          <label>
+            <input type="radio" id="engtoal" value="engtoal" v-model="translationType">
+            <span class="label-body">English to Al-Bhed</span>
+          </label>
+        </div>
+        <div class="six columns">
+          
+          <label>
+            <input type="radio" id="altoeng" value="altoeng" v-model="translationType">
+            <span class="label-body">Al-Bhed to English</span>
+          </label>
+        </div>
+      </div>
+
       <label for="inField">In</label>
       <textarea class="u-full-width" id="inField" v-model="input"></textarea>
       <label for="outField">Out</label>
       <textarea class="u-full-width" id="outField" v-model="output" disabled></textarea>
+
     </div>
   </div>
 
