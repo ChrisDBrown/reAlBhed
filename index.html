@@ -18,7 +18,6 @@
   <div class="container" id="app">
     <div class="row">
       <h1>reAlBhed</h1>
-      <p>Use <strong>[</strong>square brackets<strong>]</strong> for bits you don't want translated</p>
 
       <div class="row">
         <div class="six columns">
@@ -36,12 +35,16 @@
         </div>
       </div>
 
-      <div class="row primers">
+      <div class="row">
+        <p>Use <strong>[</strong><span class="pause">square brackets</span><strong>]</strong> around bits you don't want translated</p>
+      </div>
+
+      <div class="row primers" v-if="showPrimers">
+        <p>Select any primers you've <span class="obtained">already collected</span> so they're not translated again</p>
         <div v-for="primer in primers" class="two columns primer" v-bind:class="{ 'obtained': primer.obtained }">
           <span v-on:click="primerClicked($index)">{{primer.name}}</span>
         </div>
       </div>
-      
 
       <div class="row">
         <label for="inField">In</label>
