@@ -7,7 +7,28 @@
 		data: {
 			input: '',
 		    output: '',
-		    translationType: 'engtoal'
+		    primers: [],
+		    translationType: 'altoeng',
+		},
+		methods: {
+			primerClicked: function(i) {
+				// change obtained from true to false or vice versa
+				vm.primers[i].obtained = !vm.primers[i].obtained;
+				translateAll();
+			}
+		},
+		created: function() {
+			// avoiding an external ajax suite for just one call
+			var request = new XMLHttpRequest();
+			request.open('GET', '/js/primers.json', true);
+
+			request.onload = function() {
+		  		if (request.status >= 200 && request.status < 400) {
+			    	vm.primers = JSON.parse(request.responseText);
+				}
+			};
+
+			request.send();
 		}
 	});
 
@@ -55,7 +76,7 @@
 		var fromAlpha = getFromAlphabet();
 		var toAlpha = getToAlphabet();
 
-		if (pauseTranslation) {
+		if (pauseTranslation || !isLetter(letter)) {
 			return letter;
 		} else {
 			return toAlpha[fromAlpha.indexOf(letter)];

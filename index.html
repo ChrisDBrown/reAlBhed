@@ -11,6 +11,7 @@
   <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/custom.css">
 
 </head>
 <body>
@@ -22,23 +23,35 @@
       <div class="row">
         <div class="six columns">
           <label>
-            <input type="radio" id="engtoal" value="engtoal" v-model="translationType">
-            <span class="label-body">English to Al-Bhed</span>
-          </label>
-        </div>
-        <div class="six columns">
-          
-          <label>
             <input type="radio" id="altoeng" value="altoeng" v-model="translationType">
             <span class="label-body">Al-Bhed to English</span>
           </label>
         </div>
+
+        <div class="six columns">
+          <label>
+            <input type="radio" id="engtoal" value="engtoal" v-model="translationType">
+            <span class="label-body">English to Al-Bhed</span>
+          </label>
+        </div>
       </div>
 
-      <label for="inField">In</label>
-      <textarea class="u-full-width" id="inField" v-model="input"></textarea>
-      <label for="outField">Out</label>
-      <textarea class="u-full-width" id="outField" v-model="output" disabled></textarea>
+      <div class="row primers">
+        <div v-for="primer in primers" class="two columns primer" v-bind:class="{ 'obtained': primer.obtained }">
+          <span v-on:click="primerClicked($index)">{{primer.name}}</span>
+        </div>
+      </div>
+      
+
+      <div class="row">
+        <label for="inField">In</label>
+        <textarea class="u-full-width" id="inField" v-model="input"></textarea>
+      </div>
+      
+      <div class="row">
+        <label for="outField">Out</label>
+        <p class="u-full-width output" id="outField">{{{output}}}</p>
+      </div>
 
     </div>
   </div>
