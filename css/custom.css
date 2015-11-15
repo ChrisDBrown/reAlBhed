@@ -1,3 +1,11 @@
+.pause {
+	color: #FF5CD9;
+}
+
+.obtained {
+	color: #1EAEDB;
+}
+
 .primer {
 	margin-left: 0;
 	text-align: center;
@@ -6,10 +14,6 @@
 .primer span {
 	cursor: pointer;
 	cursor: hand;
-}
-
-.primer.obtained {
-	color: #1EAEDB;
 }
 
 .output {
