@@ -31,33 +31,42 @@
 		}
 	}
 
-	function translate() {
+	function translateAll() {
 		var input = vm.input;
 		var output = '';
 		var pauseTranslation = false;
-		var fromAlpha = getFromAlphabet();
-		var toAlpha = getToAlphabet();
 
 		for (var i = 0, len = input.length; i < len; i++) {
+			// if square bracket we don't want to output
+			// just change the translation switch
 			if (input[i] == '[') {
 				pauseTranslation = true;
 			} else if (input[i] == ']') {
 				pauseTranslation = false;
-			} else if (isLetter(input[i]) && !pauseTranslation) {
-				output += toAlpha[fromAlpha.indexOf(input[i])];
 			} else {
-				output += input[i];
+				output += translateLetter(input[i], pauseTranslation);
 			}
 		}
 
 		vm.output = output;
 	}
 
+	function translateLetter(letter, pauseTranslation) {
+		var fromAlpha = getFromAlphabet();
+		var toAlpha = getToAlphabet();
+
+		if (pauseTranslation) {
+			return letter;
+		} else {
+			return toAlpha[fromAlpha.indexOf(letter)];
+		}
+	}
+
 	vm.$watch('input', function() {
-		translate();
+		translateAll();
 	});
 
-	vm.$watch('translationType', function(newVal) {
-		translate();
+	vm.$watch('translationType', function() {
+		translateAll();
 	});
 })();
