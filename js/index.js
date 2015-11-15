@@ -2,10 +2,6 @@
 	var engToAl = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	var alToEng = 'ypltavkrezgmshubxncdijfqowYPLTAVKREZGMSHUBXNCDIJFXOW';
 
-	function isLetter(str) {
-	  return str.length === 1 && str.match(/[a-z]/i);
-	}
-
 	var vm = new Vue({
 		el: '#app',
 		data: {
@@ -14,11 +10,30 @@
 		}
 	});
 
+	function isLetter(str) {
+		return str.length === 1 && str.match(/[a-z]/i);
+	}
+
+	function getFromAlphabet() {
+		return engToAl;
+	}
+
+	function getToAlphabet() {
+		return alToEng;
+	}
+
 	vm.$watch('input', function(newVal) {
 		var newOutput = '';
+		var pauseTranslation = false;
+		var fromAlpha = getFromAlphabet();
+		var toAlpha = getToAlphabet();
 		for (var i = 0, len = newVal.length; i < len; i++) {
-			if (isLetter(newVal[i])) {
-				newOutput += alToEng[engToAl.indexOf(newVal[i])];
+			if (newVal[i] == '[') {
+				pauseTranslation = true;
+			} else if (newVal[i] == ']') {
+				pauseTranslation = false;
+			} else if (isLetter(newVal[i]) && !pauseTranslation) {
+				newOutput += toAlpha[fromAlpha.indexOf(newVal[i])];
 			} else {
 				newOutput += newVal[i];
 			}
