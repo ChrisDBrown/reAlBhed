@@ -1,0 +1,24 @@
+.primer {
+	margin-left: 0;
+	text-align: center;
+}
+
+.primer span {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.primer.obtained {
+	color: #1EAEDB;
+}
+
+.output {
+	height: 65px;
+	padding: 6px 10px;
+	background-color: #fff;
+	border: 1px solid #D1D1D1;
+	border-radius: 4px;
+	box-shadow: none;
+	box-sizing: border-box;
+	overflow-y: scroll;
+}
