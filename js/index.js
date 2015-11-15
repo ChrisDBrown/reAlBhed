@@ -8,27 +8,34 @@
 			input: '',
 		    output: '',
 		    primers: [],
+		    showPrimers: true,
 		    translationType: 'altoeng',
 		},
 		methods: {
 			primerClicked: function(i) {
 				// change obtained from true to false or vice versa
 				vm.primers[i].obtained = !vm.primers[i].obtained;
+				localStorage.setItem('primers', JSON.stringify(vm.primers));
 				translateAll();
 			}
 		},
 		created: function() {
-			// avoiding an external ajax suite for just one call
-			var request = new XMLHttpRequest();
-			request.open('GET', '/js/primers.json', true);
+			var localPrimers = localStorage.getItem('primers');
+			if (localPrimers !== null) {
+				this.primers = JSON.parse(localPrimers);
+			} else {
+				// avoiding an external ajax suite for just one call
+				var request = new XMLHttpRequest();
+				request.open('GET', '/js/primers.json', true);
 
-			request.onload = function() {
-		  		if (request.status >= 200 && request.status < 400) {
-			    	vm.primers = JSON.parse(request.responseText);
-				}
-			};
+				request.onload = function() {
+			  		if (request.status >= 200 && request.status < 400) {
+				    	vm.primers = JSON.parse(request.responseText);
+					}
+				};
 
-			request.send();
+				request.send();
+			}
 		}
 	});
 
@@ -36,20 +43,26 @@
 		return str.length === 1 && str.match(/[a-z]/i);
 	}
 
-	function getFromAlphabet() {
-		if (vm.translationType == 'engtoal') {
+	function getToAlphabet() {
+		if (vm.translationType == 'altoeng') {
 			return engToAl;
 		} else {
 			return alToEng;
 		}
 	}
 
-	function getToAlphabet() {
-		if (vm.translationType == 'engtoal') {
+	function getFromAlphabet() {
+		if (vm.translationType == 'altoeng') {
 			return alToEng;
 		} else {
 			return engToAl;
 		}
+	}
+
+	function hasPrimer(letter) {
+		var index = engToAl.indexOf(letter.toLowerCase());
+
+		return vm.primers[index].obtained;
 	}
 
 	function translateAll() {
@@ -61,9 +74,15 @@
 			// if square bracket we don't want to output
 			// just change the translation switch
 			if (input[i] == '[') {
-				pauseTranslation = true;
+				if (!pauseTranslation) {
+					pauseTranslation = true;
+					output += '<span class="pause">';
+				}
 			} else if (input[i] == ']') {
-				pauseTranslation = false;
+				if (pauseTranslation) {
+					pauseTranslation = false;
+					output += '</span>';
+				}
 			} else {
 				output += translateLetter(input[i], pauseTranslation);
 			}
@@ -79,6 +98,9 @@
 		if (pauseTranslation || !isLetter(letter)) {
 			return letter;
 		} else {
+			if (vm.translationType == 'altoeng' && hasPrimer(letter)) {
+				return '<span class="obtained">' + letter + '</span>';
+			}
 			return toAlpha[fromAlpha.indexOf(letter)];
 		}
 	}
@@ -87,7 +109,12 @@
 		translateAll();
 	});
 
-	vm.$watch('translationType', function() {
+	vm.$watch('translationType', function(newVal) {
+		if (newVal == 'engtoal') {
+			vm.showPrimers = false;
+		} else {
+			vm.showPrimers = true;
+		}
 		translateAll();
 	});
 })();
